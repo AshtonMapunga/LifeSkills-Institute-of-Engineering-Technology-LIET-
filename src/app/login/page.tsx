@@ -44,6 +44,7 @@ function LoginForm() {
       // Store in localStorage
       localStorage.setItem('userId', data.userId);
       localStorage.setItem('token', data.token);
+      localStorage.setItem('fullName', data.fullName);
 
       if (data.role === 'admin' || role === 'admin') {
         router.push('/admin/dashboard');

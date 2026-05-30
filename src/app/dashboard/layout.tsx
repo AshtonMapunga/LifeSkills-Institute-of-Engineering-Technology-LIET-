@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { useTheme } from 'next-themes';
@@ -10,11 +10,22 @@ import { useEffect, useState } from 'react';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const [userName, setUserName] = useState('');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const storedName = localStorage.getItem('fullName');
+    if (storedName) setUserName(storedName);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('fullName');
+    router.push('/login?role=student');
+  };
 
   const navItems = [
     { 
@@ -37,7 +48,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     { 
       name: 'Co-Curriculum', 
-      href: '/dashboard/activities',
+      href: '/dashboard/co-curriculum',
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -102,7 +113,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         <div className="p-6 border-t border-slate-200 dark:border-slate-800">
-          <button className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300"
+          >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
@@ -115,7 +129,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <main className="flex-1 lg:ml-72 pb-[88px] lg:pb-0 relative overflow-x-hidden min-h-screen flex flex-col">
         {/* Desktop Top Header */}
         <header className="hidden lg:flex h-20 items-center justify-between px-8 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md sticky top-0 z-20 border-b border-slate-200 dark:border-slate-800">
-          <div className="font-bold text-xl text-slate-800 dark:text-slate-100">Welcome back, Sarah! 👋</div>
+          <div className="font-bold text-xl text-slate-800 dark:text-slate-100">Welcome back, {userName || 'Student'}! 👋</div>
           <div className="flex items-center gap-4">
              {mounted && (
                 <button
@@ -129,9 +143,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     )}
                 </button>
              )}
-             <div className="w-10 h-10 rounded-full border-2 border-[var(--primary)] overflow-hidden relative shadow-sm">
-                <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" fill alt="Profile" className="object-cover" />
-             </div>
           </div>
         </header>
 
@@ -143,9 +154,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
             <span className="font-extrabold text-lg text-[var(--primary)] dark:text-[var(--primary-light)]">LifeSkills</span>
           </Link>
-          <div className="w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700 overflow-hidden relative">
-            <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" fill alt="Profile" className="object-cover" />
-          </div>
         </header>
 
         <div className="p-4 sm:p-8 flex-1 animate-fade-in-up">
