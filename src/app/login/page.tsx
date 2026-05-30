@@ -36,15 +36,24 @@ function LoginForm() {
         }),
       });
 
-      const data = await res.json();
+      let data;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Server error: ${res.status} ${res.statusText}`);
+      }
+
       if (!res.ok) {
-        throw new Error(data.error || 'Login failed');
+        throw new Error(data?.error || 'Login failed');
       }
 
       // Store in localStorage
       localStorage.setItem('userId', data.userId);
       localStorage.setItem('token', data.token);
       localStorage.setItem('fullName', data.fullName);
+      localStorage.setItem('email', data.email);
 
       if (data.role === 'admin' || role === 'admin') {
         router.push('/admin/dashboard');

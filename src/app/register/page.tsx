@@ -69,31 +69,13 @@ function RegisterForm() {
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
             alt="Students on campus"
             fill
-            className="object-cover opacity-30"
+            className="object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/90 to-[var(--primary-hover)]/95 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/80 to-slate-950/90 mix-blend-multiply" />
         </div>
         
-        <div className="relative z-10 text-white max-w-lg">
-          <Link href="/" className="inline-flex items-center gap-3 mb-12 hover:opacity-80 transition-opacity group">
-            <div className="w-12 h-12 bg-white rounded-lg p-1 transition-transform duration-300 group-hover:scale-105 shadow-xl">
-              <Image src="/logo.png" alt="Logo" width={40} height={40} className="object-contain" />
-            </div>
-            <span className="font-extrabold text-2xl tracking-tight leading-tight">LifeSkills Institute</span>
-          </Link>
-          <h1 className="text-4xl lg:text-5xl font-extrabold mb-6 leading-tight tracking-tight">Start Your Journey Today.</h1>
-          <p className="text-lg text-slate-300 leading-relaxed font-medium">
-            Join the Re-Schooling Academy or explore our premium Technical High School vocational programs designed to equip you with real-world excellence.
-          </p>
-          
-          <div className="mt-12 flex items-center gap-4">
-            <div className="flex -space-x-3">
-              <div className="w-10 h-10 rounded-full border-2 border-[var(--primary)] overflow-hidden relative"><Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" fill alt="Student" className="object-cover" /></div>
-              <div className="w-10 h-10 rounded-full border-2 border-[var(--primary)] overflow-hidden relative"><Image src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" fill alt="Student" className="object-cover" /></div>
-              <div className="w-10 h-10 rounded-full border-2 border-[var(--primary)] overflow-hidden relative bg-white flex items-center justify-center"><span className="text-xs font-bold text-[var(--primary)]">+2k</span></div>
-            </div>
-            <div className="text-sm font-semibold tracking-wide text-blue-100">Join 2,000+ Students</div>
-          </div>
+        <div className="relative z-10 text-white max-w-lg text-center">
+          {/* Content removed as requested */}
         </div>
       </div>
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-const INPUT_CLS = "w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition-all dark:text-white text-sm";
+const INPUT_CLS = "w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition-all dark:text-white text-sm disabled:opacity-70 disabled:cursor-not-allowed";
 const LABEL_CLS = "text-xs font-bold text-slate-600 dark:text-slate-400 tracking-wide uppercase ml-1 block mb-1";
 const ERROR_CLS = "text-red-500 text-xs mt-1 ml-1";
 
@@ -13,14 +13,17 @@ type FormData = {
   previousSchool: string; lastGrade: string; currentResults: string;
   programTrack: string; specificCourse: string; intakeStatus: string;
   nationalIdImage: string; academicResultsImage: string; hearAboutUs: string;
+  paymentMethod: 'EcoCash' | 'Paynow'; ecoCashNumber: string;
 };
 
 export default function OnlineApplication() {
   const [formStep, setFormStep] = useState(1);
-  const totalSteps = 4;
+  const totalSteps = 5;
+  const [availableCourses, setAvailableCourses] = useState<any[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [isAutoFilled, setIsAutoFilled] = useState(false);
 
   const [form, setForm] = useState<FormData>({
     fullName: '', dateOfBirth: '', gender: '', idNumber: '',
@@ -29,7 +32,25 @@ export default function OnlineApplication() {
     previousSchool: '', lastGrade: '', currentResults: '',
     programTrack: '', specificCourse: '', intakeStatus: '',
     nationalIdImage: '', academicResultsImage: '', hearAboutUs: '',
+    paymentMethod: 'EcoCash', ecoCashNumber: '',
   });
+
+  useEffect(() => {
+    // Fetch courses
+    fetch('/api/lessons')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setAvailableCourses(data);
+      })
+      .catch(err => console.error('Fetch courses error:', err));
+
+    const storedName = localStorage.getItem('fullName');
+    const storedEmail = localStorage.getItem('email');
+    if (storedName && storedEmail) {
+      setForm(prev => ({ ...prev, fullName: storedName, email: storedEmail }));
+      setIsAutoFilled(true);
+    }
+  }, []);
 
   const [nationalIdPreview, setNationalIdPreview] = useState('');
   const [academicPreview, setAcademicPreview] = useState('');
@@ -80,6 +101,11 @@ export default function OnlineApplication() {
       if (!form.nationalIdImage) newErrors.nationalIdImage = 'Please upload your National ID / Birth Certificate image';
       if (!form.academicResultsImage) newErrors.academicResultsImage = 'Please upload your academic results';
     }
+    if (step === 5) {
+      if (form.paymentMethod === 'EcoCash' && !form.ecoCashNumber.trim()) {
+        newErrors.ecoCashNumber = 'EcoCash number is required';
+      }
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -94,7 +120,7 @@ export default function OnlineApplication() {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(4)) return;
+    if (!validateStep(5)) return;
     setIsLoading(true);
     try {
       const userId = localStorage.getItem('userId');
@@ -125,7 +151,7 @@ export default function OnlineApplication() {
         </div>
         <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">Application Submitted!</h2>
         <p className="text-slate-500 dark:text-slate-400 font-medium">Your application has been received. Our admissions team will be in touch with you shortly.</p>
-        <button onClick={() => { setSubmitted(false); setFormStep(1); setForm({ fullName: '', dateOfBirth: '', gender: '', idNumber: '', address: '', phone: '', email: '', guardianName: '', guardianPhone: '', guardianOccupation: '', previousSchool: '', lastGrade: '', currentResults: '', programTrack: '', specificCourse: '', intakeStatus: '', nationalIdImage: '', academicResultsImage: '', hearAboutUs: '' }); setNationalIdPreview(''); setAcademicPreview(''); }} className="bg-[var(--primary)] text-white font-bold px-8 py-3 rounded-xl hover:bg-[var(--primary-hover)] transition-colors">
+        <button onClick={() => { setSubmitted(false); setFormStep(1); setForm({ fullName: '', dateOfBirth: '', gender: '', idNumber: '', address: '', phone: '', email: '', guardianName: '', guardianPhone: '', guardianOccupation: '', previousSchool: '', lastGrade: '', currentResults: '', programTrack: '', specificCourse: '', intakeStatus: '', nationalIdImage: '', academicResultsImage: '', hearAboutUs: '', paymentMethod: 'EcoCash', ecoCashNumber: '' }); setNationalIdPreview(''); setAcademicPreview(''); }} className="bg-[var(--primary)] text-white font-bold px-8 py-3 rounded-xl hover:bg-[var(--primary-hover)] transition-colors">
           Submit Another Application
         </button>
       </div>
@@ -162,6 +188,7 @@ export default function OnlineApplication() {
               <span className={formStep >= 2 ? 'text-[var(--primary)]' : ''}>Guardian & Academic</span>
               <span className={formStep >= 3 ? 'text-[var(--primary)]' : ''}>Program</span>
               <span className={formStep >= 4 ? 'text-[var(--primary)]' : ''}>Documents</span>
+              <span className={formStep >= 5 ? 'text-[var(--primary)]' : ''}>Payment</span>
             </div>
           </div>
 
@@ -173,7 +200,7 @@ export default function OnlineApplication() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className={LABEL_CLS}>Full Name</label>
-                    <input type="text" className={INPUT_CLS} value={form.fullName} onChange={e => set('fullName', e.target.value)} placeholder="John Doe" />
+                    <input type="text" className={INPUT_CLS} value={form.fullName} onChange={e => set('fullName', e.target.value)} placeholder="John Doe" readOnly={isAutoFilled} disabled={isAutoFilled} />
                     {errors.fullName && <p className={ERROR_CLS}>{errors.fullName}</p>}
                   </div>
                   <div>
@@ -206,7 +233,7 @@ export default function OnlineApplication() {
                   </div>
                   <div>
                     <label className={LABEL_CLS}>Email Address</label>
-                    <input type="email" className={INPUT_CLS} value={form.email} onChange={e => set('email', e.target.value)} placeholder="john@example.com" />
+                    <input type="email" className={INPUT_CLS} value={form.email} onChange={e => set('email', e.target.value)} placeholder="john@example.com" readOnly={isAutoFilled} disabled={isAutoFilled} />
                     {errors.email && <p className={ERROR_CLS}>{errors.email}</p>}
                   </div>
                 </div>
@@ -273,11 +300,10 @@ export default function OnlineApplication() {
                   <label className={LABEL_CLS}>Specific Course / Subject</label>
                   <select className={INPUT_CLS} value={form.specificCourse} onChange={e => set('specificCourse', e.target.value)}>
                     <option value="">Select course...</option>
-                    <option>Software Engineering</option>
-                    <option>Agriculture & Sustainability</option>
-                    <option>Business & Commerce</option>
-                    <option>Engineering & Construction</option>
-                    <option>ICT & Digital Skills</option>
+                    {availableCourses.map(course => (
+                      <option key={course._id} value={course.title}>{course.title}</option>
+                    ))}
+                    {availableCourses.length === 0 && <option disabled>No courses available</option>}
                     <option>Other</option>
                   </select>
                   {errors.specificCourse && <p className={ERROR_CLS}>{errors.specificCourse}</p>}
@@ -366,6 +392,64 @@ export default function OnlineApplication() {
                     <option>Search Engine</option>
                     <option>Flyer or Poster</option>
                   </select>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 5 */}
+            {formStep === 5 && (
+              <div className="space-y-6 animate-fade-in-up">
+                <h3 className="font-bold text-lg text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">Application Payment</h3>
+                
+                <div className="space-y-4">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Please select your preferred payment method for the application fee ($10).</p>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className={`border-2 rounded-2xl p-6 cursor-pointer transition-all ${form.paymentMethod === 'EcoCash' ? 'border-[var(--primary)] bg-[var(--primary)]/5 ring-4 ring-[var(--primary)]/10' : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900'}`}>
+                      <input type="radio" name="payment" className="hidden" checked={form.paymentMethod === 'EcoCash'} onChange={() => set('paymentMethod', 'EcoCash')} />
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-black text-xl italic">
+                          e
+                        </div>
+                        <span className="font-bold text-slate-800 dark:text-white">EcoCash</span>
+                      </div>
+                    </label>
+
+                    <label className={`border-2 rounded-2xl p-6 cursor-pointer transition-all ${form.paymentMethod === 'Paynow' ? 'border-orange-500 bg-orange-500/5 ring-4 ring-orange-500/10' : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900'}`}>
+                      <input type="radio" name="payment" className="hidden" checked={form.paymentMethod === 'Paynow'} onChange={() => set('paymentMethod', 'Paynow')} />
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-black text-xl italic">
+                          P
+                        </div>
+                        <span className="font-bold text-slate-800 dark:text-white">Paynow</span>
+                      </div>
+                    </label>
+                  </div>
+
+                  {form.paymentMethod === 'EcoCash' && (
+                    <div className="mt-8 space-y-3 animate-fade-in-up">
+                      <label className={LABEL_CLS}>EcoCash Phone Number</label>
+                      <input 
+                        type="tel" 
+                        className={INPUT_CLS} 
+                        value={form.ecoCashNumber} 
+                        onChange={e => set('ecoCashNumber', e.target.value)} 
+                        placeholder="077XXXXXXX" 
+                      />
+                      {errors.ecoCashNumber && <p className={ERROR_CLS}>{errors.ecoCashNumber}</p>}
+                      <p className="text-xs text-slate-500 italic mt-2">You will receive a prompt on your phone to enter your PIN.</p>
+                    </div>
+                  )}
+
+                  {form.paymentMethod === 'Paynow' && (
+                    <div className="mt-8 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 animate-fade-in-up">
+                      <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-4 text-center">You will be redirected to the Paynow secure payment gateway after clicking &quot;Submit Application&quot;.</p>
+                      <div className="flex justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="https://www.paynow.co.zw/Content/Buttons/Medium_W_All_I.png" alt="Paynow Buttons" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

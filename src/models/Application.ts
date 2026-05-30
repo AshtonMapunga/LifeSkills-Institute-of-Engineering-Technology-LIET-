@@ -30,6 +30,10 @@ const applicationSchema = new Schema({
 
   status: { type: String, enum: ['pending', 'reviewing', 'accepted', 'rejected'], default: 'pending' },
   userId: { type: String, required: true },
+  
+  // Step 5 - Payment Info
+  paymentMethod: { type: String, enum: ['EcoCash', 'Paynow'], default: 'EcoCash' },
+  ecoCashNumber: { type: String, trim: true },
 }, { timestamps: true });
 
 const Application = models.Application || model('Application', applicationSchema);

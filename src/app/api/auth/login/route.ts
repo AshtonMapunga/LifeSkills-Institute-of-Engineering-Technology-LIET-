@@ -12,9 +12,10 @@ const loginSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  let body: any;
   try {
     await dbConnect();
-    const body = await req.json();
+    body = await req.json();
     
     const result = loginSchema.safeParse(body);
     if (!result.success) {
@@ -55,7 +56,14 @@ export async function POST(req: Request) {
     
     return NextResponse.json({ message: 'Login successful', role: user.role, userId: user._id.toString(), email: user.email, fullName: user.fullName, token }, { status: 200 });
   } catch (error: any) {
-    console.error('Login error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('CRITICAL LOGIN ERROR:', {
+      message: error.message,
+      stack: error.stack,
+      email: body?.email
+    });
+    return NextResponse.json({ 
+      error: 'Internal server error', 
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined 
+    }, { status: 500 });
   }
 }
