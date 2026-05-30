@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "temp-app",
+  "name": "liet",
   "compatibility_date": "2026-05-30",
   "compatibility_flags": [
     "nodejs_compat"
