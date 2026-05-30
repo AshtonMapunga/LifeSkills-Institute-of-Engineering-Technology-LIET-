@@ -1,144 +1,92 @@
-import Navbar from '@/components/Navbar';
-import AboutSection from '@/components/AboutSection';
-import CoursesSection from '@/components/CoursesSection';
-import ActivitiesSection from '@/components/ActivitiesSection';
-import Footer from '@/components/Footer';
+import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 selection:bg-[var(--primary)] selection:text-white font-sans transition-colors duration-300">
-      <Navbar />
-      
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
-        {/* Abstract Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-white to-blue-100/30 -z-10" />
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,var(--primary-light)_0%,transparent_60%)] opacity-[0.08] -z-10 transform translate-x-1/3 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_60%)] opacity-[0.05] -z-10 transform -translate-x-1/3 translate-y-1/3" />
-        
-        {/* Dynamic Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] -z-10 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+    <main className="min-h-screen relative flex items-center justify-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 overflow-hidden">
+      {/* Background Gradients */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-white to-blue-100/30 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 -z-10" />
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/20 dark:bg-[var(--primary)]/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[150px] -z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
-            {/* Text Content */}
-            <div className="max-w-2xl animate-fade-in-up relative z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]/5 text-[var(--primary)] font-semibold text-sm mb-8 border border-[var(--primary)]/20 shadow-sm backdrop-blur-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--primary)] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--primary)]"></span>
-                </span>
-                Admissions Open for 2026
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] -z-10 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+
+      <div className="w-full max-w-5xl z-10 animate-fade-in-up">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white dark:bg-slate-900 rounded-2xl p-2 border border-slate-200 dark:border-slate-800 shadow-xl mb-6 hover:scale-105 transition-transform duration-300">
+            <Image src="/logo.png" alt="LifeSkills Logo" width={64} height={64} className="object-contain drop-shadow-md" priority />
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+            Welcome to <br className="sm:hidden" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]">LifeSkills</span>
+          </h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto font-medium">
+            Select your role to access your personalized portal and continue your journey with us.
+          </p>
+        </div>
+
+        {/* Role Cards */}
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-10 max-w-4xl mx-auto">
+          {/* User Role Card */}
+          <Link href="/login?role=student" className="group relative bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--primary)]/20 hover:border-[var(--primary)]/50 focus:outline-none focus:ring-4 focus:ring-[var(--primary)]/20 overflow-hidden block">
+            {/* Hover Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-16 h-16 bg-blue-100/50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-[var(--primary)] mb-8 group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white transition-all duration-500 shadow-sm border border-blue-200 dark:border-slate-700 group-hover:border-transparent">
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                </svg>
               </div>
               
-              <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.15] mb-6">
-                Shape Your <br/>
-                <span className="relative inline-block mt-2">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]">Future Today.</span>
-                  <div className="absolute -bottom-2 left-0 w-full h-3 bg-[var(--primary)]/20 dark:bg-[var(--primary)]/40 -rotate-2 -z-0 rounded-full"></div>
-                </span>
-              </h1>
-              
-              <p className="text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed max-w-xl">
-                LifeSkills Institute of Engineering Technology equips you with practical skills, innovative thinking, and the technical mastery needed to lead in tomorrow's world.
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-[var(--primary)] transition-colors">User / Student</h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">
+                Access your courses, track your progress, participate in activities, and manage your student profile.
               </p>
               
-              <div className="flex flex-wrap gap-4">
-                <button className="group relative bg-[var(--primary)] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-[var(--primary-hover)] transition-all duration-300 hover:shadow-xl hover:shadow-[var(--primary)]/30 hover:-translate-y-1 overflow-hidden">
-                  <span className="relative z-10">Explore Programs</span>
-                  <div className="absolute inset-0 h-full w-0 bg-white/20 transition-[width] duration-300 ease-out group-hover:w-full"></div>
-                </button>
-                <button className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-2 border-slate-200 dark:border-slate-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-[var(--primary)] dark:hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 hover:-translate-y-1 shadow-sm">
-                  Virtual Tour
-                </button>
+              <div className="mt-auto flex items-center text-sm font-bold tracking-wider uppercase text-[var(--primary)]">
+                <span>Continue as User</span>
+                <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Admin Role Card */}
+          <Link href="/login?role=admin" className="group relative bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--primary)]/20 hover:border-[var(--primary)]/50 focus:outline-none focus:ring-4 focus:ring-[var(--primary)]/20 overflow-hidden block">
+            {/* Hover Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-16 h-16 bg-blue-100/50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-[var(--primary)] mb-8 group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white transition-all duration-500 shadow-sm border border-blue-200 dark:border-slate-700 group-hover:border-transparent">
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
               </div>
               
-              {/* Stats Bar */}
-              <div className="mt-16 grid grid-cols-3 gap-6 pt-8 border-t border-slate-200/60">
-                <div className="group">
-                  <div className="text-4xl font-extrabold text-[var(--primary)] mb-1 group-hover:scale-105 transition-transform duration-300 origin-left">98%</div>
-                  <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">Placement Rate</div>
-                </div>
-                <div className="group">
-                  <div className="text-4xl font-extrabold text-[var(--primary)] mb-1 group-hover:scale-105 transition-transform duration-300 origin-left">40+</div>
-                  <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">Industry Labs</div>
-                </div>
-                <div className="group">
-                  <div className="text-4xl font-extrabold text-[var(--primary)] mb-1 group-hover:scale-105 transition-transform duration-300 origin-left">5k+</div>
-                  <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">Alumni Network</div>
-                </div>
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-[var(--primary)] transition-colors">Administrator</h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">
+                Manage student records, organize activities, review applications, and oversee institute operations.
+              </p>
+              
+              <div className="mt-auto flex items-center text-sm font-bold tracking-wider uppercase text-[var(--primary)]">
+                <span>Continue as Admin</span>
+                <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </div>
             </div>
-
-            {/* Visual/Image Section */}
-            <div className="relative lg:h-[650px] flex items-center justify-center animate-fade-in lg:mt-0 mt-12">
-              <div className="relative w-full max-w-[500px] aspect-square group">
-                {/* Decorative Background Blobs & Shapes */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-[var(--primary)] to-blue-300 rounded-[2rem] rotate-6 opacity-20 transition-all duration-700 group-hover:rotate-12 group-hover:scale-105 blur-sm"></div>
-                
-                <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 shadow-2xl rounded-[2rem] overflow-hidden -rotate-3 transition-transform duration-700 group-hover:rotate-0 z-10 border border-slate-100 dark:border-slate-800">
-                  {/* Subtle inner grid/pattern */}
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                  
-                  {/* Logo Container */}
-                  <div className="relative w-3/4 h-3/4 transition-transform duration-500 group-hover:scale-110">
-                    <Image 
-                      src="/logo.png" 
-                      alt="LifeSkills Institute" 
-                      fill 
-                      className="object-contain drop-shadow-2xl brightness-100 dark:brightness-200"
-                      priority
-                    />
-                  </div>
-                </div>
-                
-                {/* Floating Elements (badges/cards) */}
-                <div className="absolute -bottom-8 -left-8 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce-slow z-20 border border-slate-100 dark:border-slate-700">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center text-green-600 dark:text-green-400 shadow-inner">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-bold text-slate-900 dark:text-white leading-tight">Accredited</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Top Tier Institute</div>
-                  </div>
-                </div>
-
-                <div className="absolute -top-6 -right-6 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl flex flex-col items-center gap-1 animate-bounce-slow z-20 border border-slate-100 dark:border-slate-700" style={{ animationDelay: '1.5s' }}>
-                  <div className="flex -space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 border-2 border-white dark:border-slate-800 z-30"></div>
-                    <div className="w-8 h-8 rounded-full bg-blue-200 border-2 border-white dark:border-slate-800 z-20"></div>
-                    <div className="w-8 h-8 rounded-full bg-blue-300 border-2 border-white dark:border-slate-800 z-10"></div>
-                  </div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white mt-1">200+ Students</div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
+          </Link>
         </div>
-        
-        {/* Wave bottom decoration */}
-        <div className="absolute bottom-0 w-full overflow-hidden leading-[0]">
-          <svg className="relative block w-[calc(100%+1.3px)] h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,123.6,190.27,105.57,235.63,91.88,284.18,63.4,321.39,56.44Z" className="fill-white dark:fill-slate-900"></path>
-          </svg>
+
+        {/* Footer Link / Info */}
+        <div className="mt-16 text-center text-slate-500 dark:text-slate-400 text-sm font-medium animate-fade-in-up md:mt-24">
+          <p>© 2026 LifeSkills Institute of Engineering Technology.</p>
         </div>
-      </section>
-
-      {/* About Section */}
-      <AboutSection />
-
-      {/* Courses & Lessons Section */}
-      <CoursesSection />
-      
-      {/* Co-Curriculum Activities Section */}
-      <ActivitiesSection />
-
-      {/* Footer Section */}
-      <Footer />
+      </div>
     </main>
   );
 }
